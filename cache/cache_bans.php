@@ -236,17 +236,6 @@ $forum_bans = array (
   ),
   21 => 
   array (
-    'id' => '22',
-    'username' => 'totek1',
-    'ip' => NULL,
-    'email' => 'totek@safe-mail.net',
-    'message' => 'http://nco5ranerted3nkt.onion/forum/viewtopic.php?id=2755',
-    'expire' => NULL,
-    'ban_creator' => '88',
-    'ban_creator_username' => 'Polsilver',
-  ),
-  22 => 
-  array (
     'id' => '23',
     'username' => 'szalony',
     'ip' => NULL,
@@ -256,7 +245,7 @@ $forum_bans = array (
     'ban_creator' => '88',
     'ban_creator_username' => 'Polsilver',
   ),
-  23 => 
+  22 => 
   array (
     'id' => '24',
     'username' => 'lysyjoe',
@@ -267,7 +256,7 @@ $forum_bans = array (
     'ban_creator' => '88',
     'ban_creator_username' => 'Polsilver',
   ),
-  24 => 
+  23 => 
   array (
     'id' => '25',
     'username' => 'luigii',
@@ -278,7 +267,7 @@ $forum_bans = array (
     'ban_creator' => '35',
     'ban_creator_username' => 'The Venom Inside',
   ),
-  25 => 
+  24 => 
   array (
     'id' => '26',
     'username' => 'Bakteria',
@@ -289,7 +278,7 @@ $forum_bans = array (
     'ban_creator' => '20',
     'ban_creator_username' => 'kyber',
   ),
-  26 => 
+  25 => 
   array (
     'id' => '31',
     'username' => 'DobrzeJest',
@@ -300,7 +289,7 @@ $forum_bans = array (
     'ban_creator' => '20',
     'ban_creator_username' => 'kyber',
   ),
-  27 => 
+  26 => 
   array (
     'id' => '32',
     'username' => 'latynos',
@@ -311,7 +300,7 @@ $forum_bans = array (
     'ban_creator' => '35',
     'ban_creator_username' => 'The Venom Inside',
   ),
-  28 => 
+  27 => 
   array (
     'id' => '33',
     'username' => 'Leon',
@@ -322,7 +311,7 @@ $forum_bans = array (
     'ban_creator' => '35',
     'ban_creator_username' => 'The Venom Inside',
   ),
-  29 => 
+  28 => 
   array (
     'id' => '34',
     'username' => 'Marcin',
@@ -333,7 +322,7 @@ $forum_bans = array (
     'ban_creator' => '20',
     'ban_creator_username' => 'kyber',
   ),
-  30 => 
+  29 => 
   array (
     'id' => '35',
     'username' => 'MarcinDwa',
@@ -344,7 +333,7 @@ $forum_bans = array (
     'ban_creator' => '35',
     'ban_creator_username' => 'The Venom Inside',
   ),
-  31 => 
+  30 => 
   array (
     'id' => '36',
     'username' => 'ProfessorJamesMoriarty',
@@ -355,7 +344,7 @@ $forum_bans = array (
     'ban_creator' => '35',
     'ban_creator_username' => 'The Venom Inside',
   ),
-  32 => 
+  31 => 
   array (
     'id' => '37',
     'username' => 'sniferek',
@@ -366,13 +355,24 @@ $forum_bans = array (
     'ban_creator' => '88',
     'ban_creator_username' => 'Polsilver',
   ),
-  33 => 
+  32 => 
   array (
     'id' => '38',
     'username' => 'fasteronhome',
     'ip' => NULL,
     'email' => 'fasteronhome@safe-mail.net',
     'message' => 'jak zalatwisz wszystkie swoje sprawy z dzialu reputacje i spory to mozesz wrocic, jid masz',
+    'expire' => NULL,
+    'ban_creator' => '88',
+    'ban_creator_username' => 'Polsilver',
+  ),
+  33 => 
+  array (
+    'id' => '39',
+    'username' => 'onomatos',
+    'ip' => NULL,
+    'email' => 'onomatos@safe-mail.net',
+    'message' => NULL,
     'expire' => NULL,
     'ban_creator' => '88',
     'ban_creator_username' => 'Polsilver',

@@ -1092,7 +1092,9 @@ function check_usergroup($user_id)
 
 	($hook = get_hook('fn_check_user_group_id')) ? eval($hook) : null;
 	$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
-	$group_id = $forum_db->result($result)['group_id'];
+	
+	$dupa = $forum_db->result($result);
+	$group_id = $dupa['group_id'];
 	if (!$group_id)
 	{
 		$group_id =2;

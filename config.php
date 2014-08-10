@@ -2,8 +2,8 @@
 
 $db_type = 'mysqli';
 $db_host = 'localhost';
-$db_name = 'forum';
-$db_username = 'other';
+$db_name = 'yyy';
+$db_username = 'xxx';
 $db_password = '';
 $db_prefix = '';
 $p_connect = false;

@@ -80,6 +80,9 @@ $lang_misc = array(
 'Stick topic redirect'		=>	'Temat przyklejony. Trwa przekierowywanie…',
 'Unstick topic redirect'	=>	'Temat odklejony. Trwa przekierowywanie…',
 'Merge error'				=>	'Powinieneś wybrać więcej niż 1 temat do połączenia.',
+'add blog topic redirect'	=>	'Temat zostal dodany do bloga.',
+'remove blog topic redirect'	=>	'Temat zostal usuniety z bloga.',
+
 
 // Moderate topic
 'Posts'						=>	'Posty',

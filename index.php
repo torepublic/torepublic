@@ -6,7 +6,8 @@
  * @license http://www.gnu.org/licenses/gpl.html GPL version 2 or higher
  * @package PunBB
  */
-
+//error_reporting(E_ALL);
+//ini_set("display_errors", 1); 
 
 if (!defined('FORUM_ROOT'))
 	define('FORUM_ROOT', './');

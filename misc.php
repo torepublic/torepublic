@@ -67,7 +67,237 @@ if ($action == 'rules')
 
 	require FORUM_ROOT.'footer.php';
 }
+// points
+else if($action == 'points') {
+	// Setup breadcrumbs
+	$forum_page['crumbs'] = array(
+		array($forum_config['o_board_title'], forum_link($forum_url['index'])),
+		"Points"
+	);
+	
+	define('FORUM_PAGE', 'points');
+	require FORUM_ROOT.'header.php';
+	
+	// START SUBST - <!-- forum_main -->
+	ob_start();
+	
+	// sql queries
+		$limit = 23;
+		$query = array(
+			'SELECT'	=> 'users.id as i, username, SUM(IF(mark=1,1,0)) as o, SUM(IF(mark=-1,1,0)) as p, SUM(mark) as q',
+			'FROM'		=> 'pun_karma LEFT JOIN posts ON posts.id=pun_karma.post_id LEFT JOIN ' .
+			'users ON users.id=posts.poster_id',
+			'WHERE'		=>	'users.karma>'.intval($forum_config['o_nya_hide_treshold']),
+			'GROUP BY'	=> 'users.id',
+			'ORDER BY'	=> 'q DESC',
+			'LIMIT'		=> $limit.', 1'
+		);
+		$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
+		$cur = $forum_db->fetch_assoc($result);
+		$karma = $cur['q'];	
+	
+	// end
+	echo '<div class="main-head">
+		<h2 class="hn"><span>Points</span></h2>
+	</div>
 
+	<div class="main-content main-frm">
+		<div id="points-content" class="ct-box user-box">
+			<div class="main-subhead">
+				<center>Po przekroczeniu danych progow nadawane sa odpowiednie rangi</center>
+			</div>
+			<div class="main-content main-category">
+					<table width="100%" rules="all">
+					<tr>
+						<td width="20%" style="text-align:center; font-weight:bold;">Member</td>
+						<td width="20%" style="text-align:center; font-weight:bold;">1 punkt</td>
+						<td width="60%" style="text-align:center; font-weight:bold;">Uprawnia do czytania chronionych dzialow</td>
+					</tr>
+					<tr>
+						<td width="20%" style="text-align:center; font-weight:bold;">Active Member</td>
+						<td width="20%" style="text-align:center; font-weight:bold;">'.$karma.'	 punktów</td>
+						<td width="60%" style="text-align:center; font-weight:bold;">Uprawnia do pisania tematow ukrytych dla Members (generowany dynamicznie)</td>
+					</tr>
+					<tr>
+						<td width="20%" style="text-align:center; font-weight:bold;">Tag Hide</td>
+						<td width="20%" style="text-align:center; font-weight:bold;">'.intval($forum_config['o_nya_hide_treshold']).' punkty</td>
+						<td width="60%" style="text-align:center; font-weight:bold;">Uprawnia do czytania tekstow znajdujacych sie w tagu Hide</td>
+					</tr>
+					</table>
+			</div>
+			
+			<div style="overflow: hidden;">
+				<div style="width: 60%; float: left; display: inline;">
+					<div class="main-subhead">
+						<center>Ostatnie 100 plusow</center>
+					</div>
+					<div class="main-content main-category">
+							<table width="100%" rules="all">
+							<tr>
+								<td width="15%" style="text-align:center; font-weight:bold;">Data</td>
+								<td width="35%" style="text-align:center; font-weight:bold;">Od kogo</td>
+								<td width="35%" style="text-align:center; font-weight:bold;">Dla kogo</td>
+								<td width="15%" style="text-align:center; font-weight:bold;">Post</td>
+							</tr>';
+							$limit = 100;
+							$query = array(
+											'SELECT'	=> 'kto.username AS od, kto.id AS odid, kto.group_id AS gid, post_id, mark, updated_at, komu.username AS dla, komu.id AS dlaid',
+											'FROM'		=> 'pun_karma LEFT JOIN users AS kto ON kto.id=pun_karma.user_id LEFT JOIN posts'
+											.' ON pun_karma.post_id=posts.id LEFT JOIN users AS komu ON posts.poster_id=komu.id',
+											'ORDER BY'	=> 'updated_at DESC',
+											'LIMIT'		=> '0, ' . $limit
+										);
+							$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
+							while ($cur = $forum_db->fetch_assoc($result)) {
+								if(empty($cur['dlaid'])) continue;
+								echo '<tr style="background-color: #' . (($cur['mark']>0)?("00FF"):("FF00")). '00;">
+									<td width="15%" style="text-align:center; font-weight:bold;">'.date("d-m", $cur['updated_at']).'</td>
+									<td width="35%" style="text-align:center; font-weight:bold;"><a href="/forum/profile.php?id='.$cur['odid'].'">'.$cur['od'].'</a></td>
+									<td width="35%" style="text-align:center; font-weight:bold;"><a href="/forum/profile.php?id='.$cur['dlaid'].'">'.$cur['dla'].'</td>
+									<td width="15%" style="text-align:center; font-weight:bold;"><a href="/forum/viewtopic.php?pid='.$cur['post_id']."#p".$cur['post_id'].'">click</a></td>
+								</tr>';
+							}
+							
+							echo '</table>  
+					</div>
+				</div>
+				<div style="width: 1%; float: left; overflow: hidden; display: inline;">
+				</div>
+				<div style="width: 39%; float: left; overflow: hidden; display: inline;">
+					<div class="main-subhead">
+						<center>Najbardziej plusowane posty</center>
+					</div>
+					<div class="main-content main-category">
+							<table width="100%" rules="all">
+							<tr>
+								<td width="50%" style="text-align:center; font-weight:bold;">Twórca</td>
+								<td width="25%" style="text-align:center; font-weight:bold;">Post</td>
+								<td width="25%" style="text-align:center; font-weight:bold;">Plusy</td>
+							</tr>';
+							
+							$query = array(
+								'SELECT'        => '`pun_karma`.`post_id` as `post_id`, `posts`.`poster` as `poster`, `posts`.`poster_id` as `poster_id`, COUNT(*) AS c',
+								'FROM'          => 'pun_karma left join `posts` on `posts`.`id` = `pun_karma`.`post_id`',
+								'WHERE'		=> '`pun_karma`.`mark` = 1',
+								'GROUP BY'      => '`pun_karma`.`post_id`',
+								'ORDER BY'      => '`c` DESC',
+								'LIMIT'         => '0, ' . $limit
+							);
+
+							$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
+
+							while ($cur = $forum_db->fetch_assoc($result))
+							{
+								if(empty($cur['poster'])) continue;
+								echo '<tr>
+									<td width="50%" style="text-align:center; font-weight:bold;"><a href="/forum/profile.php?id='.$cur['poster_id'].'">'.$cur['poster'].'</a></td>
+									<td width="25%" style="text-align:center; font-weight:bold;"><a href="/forum/viewtopic.php?pid='.$cur['post_id'].'">click</a></td>
+									<td width="25%" style="text-align:center; font-weight:bold;">'.$cur['c'].'</td>
+								</tr>';
+							}
+							
+							echo '</table>
+					</div>
+				</div>
+			</div>
+			
+
+			
+			
+			
+
+			<div style="overflow: hidden;">
+				<div style="width: 49.5%; float: left; display: inline;">
+					<div class="main-subhead">
+						<center>Ranking dajacych plusy i minusy</center>
+					</div>
+					<div class="main-content main-category">
+							<table width="100%" rules="all">
+							<tr>
+								<td width="50%" style="text-align:center; font-weight:bold;">Kto</td>
+								<td width="10%" style="text-align:center; font-weight:bold;">+</td>
+								<td width="10%" style="text-align:center; font-weight:bold;">-</td>
+								<td width="10%" style="text-align:center; font-weight:bold;">=</td>
+								<td width="20%" style="text-align:center; font-weight:bold;">Posty</td>
+							</tr>';
+							$query = array(
+									'SELECT'        => 'users.id as i, num_posts, username, SUM(IF(mark=1,1,0)) AS o, SUM(IF(mark=-1,1,0)) AS p, COUNT(mark) as q',
+								'FROM'          => 'pun_karma LEFT JOIN users ON users.id=pun_karma.user_id',
+								'GROUP BY'      => 'users.id',
+								'ORDER BY'      => 'q DESC',
+								'LIMIT'		=> '0, ' . $limit
+							);
+
+							$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
+
+							while ($cur = $forum_db->fetch_assoc($result))
+							{
+								if(empty($cur['username'])) continue;
+								echo '<tr>
+									<td width="50%" style="text-align:center; font-weight:bold;"><a href="/forum/profile.php?id='.$cur["i"].'">'.$cur['username'].'</a></td>
+									<td width="10%" style="text-align:center; font-weight:bold;">'.$cur['o'].'</td>
+									<td width="10%" style="text-align:center; font-weight:bold;">'.$cur['p'].'</td>
+									<td width="10%" style="text-align:center; font-weight:bold;">'.$cur['q'].'</td>
+									<td width="20%" style="text-align:center; font-weight:bold;">'.($cur['num_posts'] > 100 ? ">100" : $cur['num_posts']).'</td>
+								</tr>';
+							}
+
+							echo '</table>  
+					</div>
+				</div>
+				<div style="width: 1%; float: left; overflow: hidden; display: inline;">
+				</div>
+				<div style="width: 49.5%; float: left; display: inline;">
+					<div class="main-subhead">
+						<center>Ranking wg. reputacji</center>
+					</div>
+					<div class="main-content main-category">
+							<table width="100%" rules="all">
+							<tr>
+								<td width="50%" style="text-align:center; font-weight:bold;">Kto</td>
+								<td width="10%" style="text-align:center; font-weight:bold;">+</td>
+								<td width="10%" style="text-align:center; font-weight:bold;">-</td>
+								<td width="10%" style="text-align:center; font-weight:bold;">=</td>
+								<td width="20%" style="text-align:center; font-weight:bold;">Posty</td>
+							</tr>';
+							
+							$query = array(
+								'SELECT'	=> 'users.id as i, num_posts, username, SUM(IF(mark=1,1,0)) as o, SUM(IF(mark=-1,1,0)) as p, SUM(mark) as q',
+								'FROM'		=> 'pun_karma LEFT JOIN posts ON posts.id=pun_karma.post_id LEFT JOIN ' .
+								'users ON users.id=posts.poster_id',
+								'GROUP BY'	=> 'users.id',
+								'ORDER BY'	=> 'q DESC',
+								'LIMIT'		=> '0, ' . $limit
+							);
+
+							$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
+
+							while ($cur = $forum_db->fetch_assoc($result))
+							{
+								if(empty($cur['username'])) continue;
+								echo '<tr>
+									<td width="50%" style="text-align:center; font-weight:bold;"><a href="/forum/profile.php?id='.$cur["i"].'">'.$cur['username'].'</a></td>
+									<td width="10%" style="text-align:center; font-weight:bold;">'.$cur['o'].'</td>
+									<td width="10%" style="text-align:center; font-weight:bold;">'.$cur['p'].'</td>
+									<td width="10%" style="text-align:center; font-weight:bold;">'.$cur['q'].'</td>
+									<td width="20%" style="text-align:center; font-weight:bold;">'.($cur['num_posts'] > 100 ? ">100" : $cur['num_posts']).'</td>
+								</tr>';
+							}
+							
+							echo '</table>  
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>';
+		
+	$tpl_temp = forum_trim(ob_get_contents());
+	$tpl_main = str_replace('<!-- forum_main -->', $tpl_temp, $tpl_main);
+	ob_end_clean();
+	// END SUBST - <!-- forum_main -->
+	require FORUM_ROOT.'footer.php';
+}
 
 // Mark all topics/posts as read?
 else if ($action == 'markread')

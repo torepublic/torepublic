@@ -1442,7 +1442,71 @@ else if (isset($_GET['unstick']))
 	redirect(forum_link($forum_url['topic'], array($unstick, sef_friendly($subject))), $lang_misc['Unstick topic redirect']);
 }
 
+else if (isset($_GET['blog_add']))
+{
+	$blog_add = intval($_GET['blog_add']);
+	if ($blog_add < 1)
+		message($lang_common['Bad request']);
 
+	if (!isset($_POST['csrf_token']) && (!isset($_GET['csrf_token']) || $_GET['csrf_token'] !== generate_form_token('blog_add'.$blog_add)))
+		csrf_confirm_form();
+
+	$query = array(
+		'SELECT'	=> 't.subject',
+		'FROM'		=> 'topics AS t',
+		'WHERE'		=> 't.id='.$blog_add.' AND forum_id='.$fid
+	);
+
+	$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
+	$subject = $forum_db->result($result);
+
+	if (!$subject)
+		message($lang_common['Bad request']);
+
+	$query = array(
+		'UPDATE'	=> 'topics',
+		'SET'		=> 'blog='.time(),
+		'WHERE'		=> 'id='.$blog_add.' AND forum_id='.$fid
+	);
+
+	$forum_db->query_build($query) or error(__FILE__, __LINE__);
+	$forum_flash->add_info($lang_misc['add blog topic redirect']);
+
+	redirect(forum_link($forum_url['topic'], array($blog_add, sef_friendly($subject))), $lang_misc['add blog topic redirect']);
+}
+
+else if (isset($_GET['blog_remove']))
+{
+	$blog_remove = intval($_GET['blog_remove']);
+	if ($blog_remove < 1)
+		message($lang_common['Bad request']);
+
+	if (!isset($_POST['csrf_token']) && (!isset($_GET['csrf_token']) || $_GET['csrf_token'] !== generate_form_token('blog_remove'.$blog_remove)))
+		csrf_confirm_form();
+
+	$query = array(
+		'SELECT'	=> 't.subject',
+		'FROM'		=> 'topics AS t',
+		'WHERE'		=> 't.id='.$blog_remove.' AND forum_id='.$fid
+	);
+
+	$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
+	$subject = $forum_db->result($result);
+
+	if (!$subject)
+		message($lang_common['Bad request']);
+
+	$query = array(
+		'UPDATE'	=> 'topics',
+		'SET'		=> 'blog=0',
+		'WHERE'		=> 'id='.$blog_remove.' AND forum_id='.$fid
+	);
+
+	$forum_db->query_build($query) or error(__FILE__, __LINE__);
+	$forum_flash->add_info($lang_misc['remove blog topic redirect']);
+
+	redirect(forum_link($forum_url['topic'], array($blog_remove, sef_friendly($subject))), $lang_misc['remove blog topic redirect']);
+}
 ($hook = get_hook('mr_new_action')) ? eval($hook) : null;
 
 

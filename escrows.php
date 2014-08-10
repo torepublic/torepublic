@@ -1,6 +1,6 @@
 <?php
-//error_reporting(1);
-//ini_set("display_errors", 1);
+#error_reporting(1);
+#ini_set("display_errors", 1);
 
 if (!defined('FORUM_ROOT'))
 	define('FORUM_ROOT', './');
@@ -321,7 +321,7 @@ else if (isset($_GET['action']) and $_GET['action']=='confirm_send_all_payouts' 
 	$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
 	$response_string = '<table>';	
 	$response_string_end = '</table>';	
-	
+	$payment_memory=array();
 	while ($row = mysqli_fetch_assoc($result))
 	{
 		if ($row['escrowid']>0)
@@ -345,11 +345,13 @@ else if (isset($_GET['action']) and $_GET['action']=='confirm_send_all_payouts' 
 			escrow_payout_insert_transaction_hash($row['index'],$btc_data->tx_hash);
 			if ($row['escrowid']>0) //gdy to jest platnosc moderatora to id =-1
 			{
-				if ($escrowinfo['status']!=PARTIAL_BITCOIN_RETURN)
+				$thisEscrowId = $row['escrowid'];
+				if ($escrowinfo['status']!=PARTIAL_BITCOIN_RETURN || in_array($thisEscrowId,$payment_memory))
 				{  //nie moze zwalniac adresu przy pierwszej platnosci partial bo nie bedzie moglo wykonac drugiej
 					escrow_free_escrow_address($sourcebtcaddress,$newbalance , $_POST['req_blockchain_password']);
 					
 				}
+				array_push($payment_memory, $thisEscrowId);
 			}
 		escrow_notify_payment_send($row['receiverid'],$row['amount'],$row['btcaddress'],$btc_data->tx_hash);
 		escrow_change_payment_status($row['index'],PAYOUT_REALISED);
@@ -656,14 +658,17 @@ else if (isset($_GET['action']) and isset($_GET['id']) and isset($_SESSION['escr
 	$forum_user['id']==$_SESSION['escrowinfo']['moderatorid'] and 
 	$_GET['action']=='confirm_no_refund' and $_SESSION['escrowinfo']['status']==PROBLEM_REPORTED)
 { 
-	$selleraddress = get_user_info($_SESSION['escrowinfo']['sellerid'])['btcaddress'];
-	change_escrow_status($_SESSION['escrowinfo']['index'] ,NO_BITCOIN_RETURN);
+	$escrowinfo = $_SESSION['escrowinfo'];
+	$selleraddress = get_user_info($escrowinfo['sellerid']);
+	$selleraddress = $selleraddress['btcaddress'];
+	
+	change_escrow_status($escrowinfo['index'] ,NO_BITCOIN_RETURN);
 	$_SESSION['escrowinfo']['status']= NO_BITCOIN_RETURN;
-	$amount=escrow_get_payout_amount($_SESSION['escrowinfo']);
+	$amount=escrow_get_payout_amount($escrowinfo);
 	$now = time();
-	escrow_note_new_payout($now, $_SESSION['escrowinfo']['sellerid'],$amount ,$selleraddress,$_SESSION['escrowinfo']['index']);
-	escrow_notify_problem_resolved($_SESSION['escrowinfo']);
-	$moderatorincome = escrow_get_moderator_earning($_SESSION['escrowinfo']);
+	escrow_note_new_payout($now, $escrowinfo['sellerid'],$amount ,$selleraddress,$escrowinfo['index']);
+	escrow_notify_problem_resolved($escrowinfo);
+	$moderatorincome = escrow_get_moderator_earning($escrowinfo);
 	escrow_note_moderator_earnings($forum_user['id'], $moderatorincome);
 	?>
 	<h1>Confirmed</h1>
@@ -673,14 +678,16 @@ else if (isset($_GET['action']) and isset($_GET['id']) and isset($_SESSION['escr
 	$forum_user['id']==$_SESSION['escrowinfo']['moderatorid'] and 
 	$_GET['action']=='confirm_full_refund' and $_SESSION['escrowinfo']['status']==PROBLEM_REPORTED)
 {
-	$buyeraddress = get_user_info($_SESSION['escrowinfo']['buyerid'])['btcaddress'];
-	change_escrow_status($_SESSION['escrowinfo']['index'] ,FULL_BITCOIN_RETURN); 
-	$_SESSION['escrowinfo']['status']= FULL_BITCOIN_RETURN;
-	$amount=escrow_get_payout_amount($_SESSION['escrowinfo']);
+	$escrowinfo = $_SESSION['escrowinfo'];
+	$buyeraddress = get_user_info($escrowinfo['buyerid']);
+	$buyeraddress = $buyeraddress['btcaddress'];
+	change_escrow_status($escrowinfo['index'] ,FULL_BITCOIN_RETURN); 
+	$escrowinfo['status']= FULL_BITCOIN_RETURN;
+	$amount=escrow_get_payout_amount($escrowinfo);
 	$now = time();
-	escrow_note_new_payout($now, $_SESSION['escrowinfo']['buyerid'],$amount ,$buyeraddress,$_SESSION['escrowinfo']['index']);
-	escrow_notify_problem_resolved($_SESSION['escrowinfo']);
-	$moderatorincome = escrow_get_moderator_earning($_SESSION['escrowinfo']);
+	escrow_note_new_payout($now, $escrowinfo['buyerid'],$amount ,$buyeraddress,$escrowinfo['index']);
+	escrow_notify_problem_resolved($escrowinfo);
+	$moderatorincome = escrow_get_moderator_earning($escrowinfo);
 	escrow_note_moderator_earnings($forum_user['id'], $moderatorincome);
 	?>
 	<h1>Confirmed</h1>
@@ -692,14 +699,17 @@ else if (isset($_GET['action']) and isset($_GET['id']) and isset($_SESSION['escr
 	intval($_POST['req_refund_percentage'])<100 and intval($_POST['req_refund_percentage'])>0)
 { 
 	$now = time();
+	//$escrowinfo = $_SESSION['escrowinfo'];
 	change_escrow_status($_SESSION['escrowinfo']['index'] ,PARTIAL_BITCOIN_RETURN);
 	$_SESSION['escrowinfo']['status']= PARTIAL_BITCOIN_RETURN;
 	$totalpayoutamount = escrow_get_payout_amount($_SESSION['escrowinfo']);
 	$buyerpayoutamount = $_POST['req_refund_percentage']/100*$totalpayoutamount;
 	$sellerpayoutamount= (1-$_POST['req_refund_percentage']/100)*$totalpayoutamount;
 	
-	$buyeraddress= get_user_info($_SESSION['escrowinfo']['buyerid'])['btcaddress'];
-	$selleraddress= get_user_info($_SESSION['escrowinfo']['sellerid'])['btcaddress'];
+	$buyeraddress= get_user_info($_SESSION['escrowinfo']['buyerid']);
+	$buyeraddress= $buyeraddress['btcaddress'];
+	$selleraddress= get_user_info($_SESSION['escrowinfo']['sellerid']);
+	$selleraddress= $selleraddress['btcaddress'];
 	
 	//buyer payment
 	escrow_note_new_payout($now, $_SESSION['escrowinfo']['buyerid'] ,

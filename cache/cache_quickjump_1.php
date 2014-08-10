@@ -22,8 +22,8 @@ $forum_id = isset($forum_id) ? $forum_id : 0;
 				<option value="31"<?php echo ($forum_id == 31) ? ' selected="selected"' : '' ?>>Bezpieczeństwo</option>
 			</optgroup>
 			<optgroup label="Hacking, Cracking, Botnets">
-				<option value="37"<?php echo ($forum_id == 37) ? ' selected="selected"' : '' ?>>Cracking</option>
 				<option value="15"<?php echo ($forum_id == 15) ? ' selected="selected"' : '' ?>>Hacking</option>
+				<option value="37"<?php echo ($forum_id == 37) ? ' selected="selected"' : '' ?>>Cracking</option>
 				<option value="17"<?php echo ($forum_id == 17) ? ' selected="selected"' : '' ?>>Socjotechnika</option>
 				<option value="36"<?php echo ($forum_id == 36) ? ' selected="selected"' : '' ?>>Botnets</option>
 				<option value="19"<?php echo ($forum_id == 19) ? ' selected="selected"' : '' ?>>Bazy danych</option>
@@ -94,8 +94,8 @@ $forum_javascript_quickjump_code = <<<EOL
 	sef_friendly_url_array[11] = "anonimowosc-w-internecie";
 	sef_friendly_url_array[12] = "anonimowosc-fizyczna";
 	sef_friendly_url_array[31] = "bezpieczenstwo";
-	sef_friendly_url_array[37] = "cracking";
 	sef_friendly_url_array[15] = "hacking";
+	sef_friendly_url_array[37] = "cracking";
 	sef_friendly_url_array[17] = "socjotechnika";
 	sef_friendly_url_array[36] = "botnets";
 	sef_friendly_url_array[19] = "bazy-danych";

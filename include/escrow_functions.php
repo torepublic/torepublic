@@ -966,21 +966,26 @@ function escrow_get_payout_address_link($escrowinfo)
 	if ($escrowinfo['status']==ESCROW_FINISHED or $escrowinfo['status']==NO_BITCOIN_RETURN or 
 			$escrowinfo['status']==BITCOINS_RELEASED)
 	{
+		$dupa = get_user_info($escrowinfo['sellerid']);
 		$return_string = "<a href=http://blockchain.info/address/".
-			get_user_info($escrowinfo['sellerid'])['btcaddress'].">"."(click)</a>";
+			$dupa['btcaddress'].">"."(click)</a>";
+			
 		
 	}
 	else if ($escrowinfo['status']==PARTIAL_BITCOIN_RETURN)
 	{
+		$dupa = get_user_info($escrowinfo['sellerid']);
 		$return_string = "<a href=http://blockchain.info/address/".
-			get_user_info($escrowinfo['sellerid'])['btcaddress'].">"."(click)</a>";
+			$dupa['btcaddress'].">"."(click)</a>";
+		$dupa = get_user_info($escrowinfo['buyerid']);
 		$return_string=$return_string."  <a href=http://blockchain.info/address/".
-			get_user_info($escrowinfo['buyerid'])['btcaddress'].">"."(click)</a>";
+			$dupa['btcaddress'].">"."(click)</a>";
 	}
 	else if ($escrowinfo['status']==FULL_BITCOIN_RETURN)
 	{
+		$dupa = get_user_info($escrowinfo['sellerid']);
 		$return_string ="<a href=http://blockchain.info/address/".
-			get_user_info($escrowinfo['buyerid'])['btcaddress'].">"."(click)</a>";
+			$dupa['btcaddress'].">"."(click)</a>";
 	}
 	else
 	{

@@ -13,7 +13,7 @@ $lang_profile = array(
 'Update profile'			=>	'Update profile',
 'Choose registration option'=>	'Choose registration option',
 'I have an invitation code'	=>	'I have an invitation code',
-'I want to buy an invitation'=>	'I want to buy an invitation',
+'I want to buy an invitation'=>	'I want to pay for registration',
 'Buy invite instructions'	=>	'Buy invite instructions',
 
 // Administration stuff

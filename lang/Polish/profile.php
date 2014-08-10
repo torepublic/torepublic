@@ -12,7 +12,7 @@ $lang_profile = array(
 'Instructions'				=>	'Zostaniesz z powrotem przekierowany na tą stronę',
 'Update profile'			=>	'Aktualizuj profil',
 'Choose registration option'=>	'Wybierz opcję rejestracji',
-'I want to buy an invitation'=>	'Chcę zakupić zaproszenie',
+'I want to buy an invitation'=>	'Chcę zapłacić za rejestrację',
 'I have an invitation code'	=>	'Posiadam kod zaproszenia',
 'Buy invite instructions'	=>	'Instrukcja zakupu zaproszenia',
 // Administration stuff

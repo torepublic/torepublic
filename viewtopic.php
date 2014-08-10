@@ -207,7 +207,7 @@ else if ($action == 'last')
 
 // Fetch some info about the topic
 $query = array(
-	'SELECT'	=> 't.subject, t.first_post_id, t.closed, t.num_replies, t.sticky, f.id AS forum_id, f.forum_name, f.moderators, fp.post_replies',
+	'SELECT'	=> 't.subject, t.first_post_id, t.closed, t.num_replies, t.sticky, t.blog, f.id AS forum_id, f.forum_name, f.moderators, fp.post_replies',
 	'FROM'		=> 'topics AS t',
 	'JOINS'		=> array(
 		array(
@@ -312,12 +312,14 @@ if (!$forum_user['is_guest'] && $forum_config['o_subscriptions'] == '1')
 
 if ($forum_page['is_admmod'])
 {
-	$forum_page['main_foot_options'] = array(
-		'move' => '<span class="first-item"><a class="mod-option" href="'.forum_link($forum_url['move'], array($cur_topic['forum_id'], $id)).'">'.$lang_topic['Move'].'</a></span>',
+$forum_page['main_foot_options'] = array(
+		'blog' => ($cur_topic['blog'] ? '<span class="first-item"><a class="mod-option" href="'.forum_link($forum_url['blog_remove'], array($cur_topic['forum_id'], $id, generate_form_token('blog_remove'.$id))).'">'.$lang_topic['BlogRemove'].'</a></span>' : '<span class="first-item"><a class="mod-option" href="'.forum_link($forum_url['blog_add'], array($cur_topic['forum_id'], $id, generate_form_token('blog_add'.$id))).'">'.$lang_topic['BlogAdd'].'</a></span>'),
+		'move' => '<span><a class="mod-option" href="'.forum_link($forum_url['move'], array($cur_topic['forum_id'], $id)).'">'.$lang_topic['Move'].'</a></span>',
 		'delete' => '<span><a class="mod-option" href="'.forum_link($forum_url['delete'], $cur_topic['first_post_id']).'">'.$lang_topic['Delete topic'].'</a></span>',
 		'close' => (($cur_topic['closed'] == '1') ? '<span><a class="mod-option" href="'.forum_link($forum_url['open'], array($cur_topic['forum_id'], $id, generate_form_token('open'.$id))).'">'.$lang_topic['Open'].'</a></span>' : '<span><a class="mod-option" href="'.forum_link($forum_url['close'], array($cur_topic['forum_id'], $id, generate_form_token('close'.$id))).'">'.$lang_topic['Close'].'</a></span>'),
 		'sticky' => (($cur_topic['sticky'] == '1') ? '<span><a class="mod-option" href="'.forum_link($forum_url['unstick'], array($cur_topic['forum_id'], $id, generate_form_token('unstick'.$id))).'">'.$lang_topic['Unstick'].'</a></span>' : '<span><a class="mod-option" href="'.forum_link($forum_url['stick'], array($cur_topic['forum_id'], $id, generate_form_token('stick'.$id))).'">'.$lang_topic['Stick'].'</a></span>')
 	);
+
 
 	if ($cur_topic['num_replies'] != 0)
 		$forum_page['main_foot_options']['moderate_topic'] = '<span><a class="mod-option" href="'.forum_sublink($forum_url['moderate_topic'], $forum_url['page'], $forum_page['page'], array($cur_topic['forum_id'], $id)).'">'.$lang_topic['Moderate topic'].'</a></span>';

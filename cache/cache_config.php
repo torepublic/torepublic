@@ -39,15 +39,17 @@ $forum_config = array (
   'o_topic_views' => '0',
   'o_quickjump' => '1',
   'o_gzip' => '1',
-  'o_additional_navlinks' => '0= <a href="http://nco5ranerted3nkt.onion/blog">Blog</a>
-4 = <a href="http://nco5ranerted3nkt.onion/forum/plusiki.php">Plusiki</a>
-5 = <a href="http://nco5ranerted3nkt.onion/forum/market.php">Rynek</a>
-6 = <a href="http://nco5ranerted3nkt.onion/forum/reputation.php">Opinie</a>
-7 = <a href="http://nco5ranerted3nkt.onion/forum/escrows.php">Escrow</a>
-8 = <a href="http://nco5ranerted3nkt.onion/forum/invites.php">Nowi</a>
-9 = <a href="http://ffntedto5vta6byb.onion/profile/">Cycki</a>',
+  'o_additional_navlinks' => '0= <a href="http://54ogum7gwxhtgiya.onion/">Blog</a>
+4 = <a href="http://nco5ranerted3nkt.onion/forum/misc.php?action=points">Points</a>
+5 =<a href="http://nco5ranerted3nkt.onion/forum/services.php">Services</a>
+6 = <a href="http://nco5ranerted3nkt.onion/forum/market.php">Market</a>
+7 = <a href="http://nco5ranerted3nkt.onion/forum/reputation.php">Feedback</a>
+8 = <a href="http://nco5ranerted3nkt.onion/forum/escrows.php">Escrow</a>
+9 = <a href="http://nco5ranerted3nkt.onion/forum/invites.php">New</a>
+10 = <a href="http://ffntedto5vta6byb.onion/profile/">Tits</a>
+11=<a href="https://github.com/torepublic/torepublic">Code</a>',
   'o_old_sell_forum' => '6',
-  'btc_price_usd' => '598',
+  'btc_price_usd' => '588',
   'o_report_method' => '0',
   'o_regs_report' => '0',
   'o_default_email_setting' => '0',
@@ -76,12 +78,6 @@ $forum_config = array (
 <br>
 <b>Pamiętajcie o escrow</b> : Wystarczy wejść w profil użytkownika aby bezpiecznie przesłać mu pieniądze, ponadto możecie poprosić kogoś z zaufanych userów o przeprowadzenie escrow. Nie korzystająć z escrow bardziej ryzykujecie i potem przybywa sporów na forum.
 <i>Chcesz wypłacić BTC z escrow ?</i> <b>Zleć wypłatę i poczekaj aż mBank ją zaakceptuje!</b>
-<br>
-REKLAMA:  
-<a href="http://nco5ranerted3nkt.onion/forum/viewtopic.php?id=3474">Dobre skany, promocja!</a>
-<br>
-REKLAMA:  
-<a href="http://nco5ranerted3nkt.onion/forum/viewtopic.php?id=3630">Kupie dostepy do stron WWW</a>
 <!--
 <a href="http://nco5ranerted3nkt.onion/forum/viewtopic.php?id=2217/">Black Services Market </a>   |   <a href="http://qd73mvvc7v7zewwl.onion/">Forum Cebulka </a>   |   <a href="http://ffntedto5vta6byb.onion/webcobra">WebCobra</a> -->',
   'o_market_miniature_price' => '0.000',
@@ -118,7 +114,7 @@ REKLAMA:
   'attach_small_height' => '60',
   'attach_small_width' => '60',
   'attach_disable_attach' => '0',
-  'o_pun_pm_inbox_size' => '200',
+  'o_pun_pm_inbox_size' => '250',
   'o_pun_pm_outbox_size' => '150',
   'o_pun_pm_show_new_count' => '1',
   'o_pun_pm_show_global_link' => '0',
@@ -150,7 +146,7 @@ REKLAMA:
   'o_escrow_duration' => '240',
   'o_trade_category_id' => '14',
   'o_guest_forum' => '49',
-  'btc_price_pln' => '1826',
+  'btc_price_pln' => '1845',
   'o_nya_minus_karma_weight' => '3',
   'o_empty_escrow_duration' => '24',
   'o_market_additional_time_price' => '0.0005',

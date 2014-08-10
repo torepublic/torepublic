@@ -80,6 +80,8 @@ $lang_misc = array(
 'No topics selected'		=>	'You must select at least one topic.',
 'Stick topic redirect'		=>	'Topic is now sticky.',
 'Unstick topic redirect'	=>	'Topic no longer sticky.',
+'add blog topic redirect'	=>	'Topic has been added to blog.',
+'remove blog topic redirect'	=>	'Topic has been removed from blog.',
 'Merge error'				=>	'You should select more than 1 topic to merge.',
 
 // Moderate topic

@@ -104,7 +104,8 @@ function reputation_insert_new_opinion($receiver_id, $comment_input, $comment_te
 		'WHERE'		=>	'id='.intval($receiver_id),
 	);
 	$result =$forum_db->query_build($query) or error(__FILE__, __LINE__);
-	$reputation =$forum_db->fetch_assoc($result)['reputation'];
+	$reputation =$forum_db->fetch_assoc($result);
+	$reputation = $reputation['reputation'];
 	$reputation = $reputation + $comment_input;
 	
 	$query = array(

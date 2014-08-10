@@ -3,7 +3,7 @@
 if (!defined('PUN_TAGS_GROUPS_PERMS')) define('PUN_TAGS_GROUPS_PERMS', 1);
 
 $pun_tags_groups_perms = array (
-  'cached' => 1404028987,
+  'cached' => 1407698191,
   1 => 
   array (
     0 => '2',
