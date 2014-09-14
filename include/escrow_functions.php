@@ -32,7 +32,7 @@ function file_get_contents_via_tor($url)
     $aContext = array(
         'http' => array(
             'method'=>'GET',
-            'proxy' => 'tcp://127.0.0.1:9050',
+            'proxy' => 'tcp://127.0.0.1:8118',
             'request_fulluri' => true,
         ),
     );
@@ -595,11 +595,15 @@ function market_add_auction($topic_id, $price, $image_url, $main_page_promted, $
 		$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
 }
 
-function lastchecktime()
+function lastchecktime($period)
 {
 	$timefilename = "lastcheck.php";
 	$checktime = file_get_contents($timefilename);
-	file_put_contents($timefilename, time());
+	$nowtime = time();
+	if ($nowtime-$checktime> $period)
+	{
+		file_put_contents($timefilename, time());
+	}
 	return $checktime;
 }
 
