@@ -32,7 +32,7 @@ if ($forum_user['is_guest'])
 ob_start();
 
 $currenttime = time();
-$lastcheck = lastchecktime();
+$lastcheck = lastchecktime(60);
 if (($currenttime - $lastcheck)> 60)
 {
 	try
