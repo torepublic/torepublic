@@ -27,13 +27,27 @@ define('PARTIAL_REFUND',2);
 define('PAYOUT_REQUESTED',0);
 define('PAYOUT_REALISED',1);
 
+function file_get_contents_via_tor($url)
+{
+    $aContext = array(
+        'http' => array(
+            'method'=>'GET',
+            'proxy' => 'tcp://127.0.0.1:9050',
+            'request_fulluri' => true,
+        ),
+    );
+    $cxContext = stream_context_create($aContext);
+    
+    return file_get_contents($url, False, $cxContext);
+}
+
 
 function update_btc_price()
 {
 	global $forum_db;
 	$price_in_fiat = 1;
-	$price_of_one_dollar = file_get_contents("https://blockchain.info/tobtc?currency=USD&value=" . $price_in_fiat);
-	$price_of_one_zloty = file_get_contents("https://blockchain.info/tobtc?currency=PLN&value=" . $price_in_fiat);
+	$price_of_one_dollar = file_get_contents_via_tor("https://blockchain.info/tobtc?currency=USD&value=" . $price_in_fiat);
+	$price_of_one_zloty = file_get_contents_via_tor("https://blockchain.info/tobtc?currency=PLN&value=" . $price_in_fiat);
 	
 	if ($price_of_one_dollar>0)
 	{
