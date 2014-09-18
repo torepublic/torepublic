@@ -152,9 +152,9 @@ else if($action == 'points') {
 								if(empty($cur['dlaid'])) continue;
 								echo '<tr style="background-color: #' . (($cur['mark']>0)?("00FF"):("FF00")). '00;">
 									<td width="15%" style="text-align:center; font-weight:bold;">'.date("d-m", $cur['updated_at']).'</td>
-									<td width="35%" style="text-align:center; font-weight:bold;"><a href="/forum/profile.php?id='.$cur['odid'].'">'.$cur['od'].'</a></td>
-									<td width="35%" style="text-align:center; font-weight:bold;"><a href="/forum/profile.php?id='.$cur['dlaid'].'">'.$cur['dla'].'</td>
-									<td width="15%" style="text-align:center; font-weight:bold;"><a href="/forum/viewtopic.php?pid='.$cur['post_id']."#p".$cur['post_id'].'">click</a></td>
+									<td width="35%" style="text-align:center; font-weight:bold;"><a href="/profile.php?id='.$cur['odid'].'">'.$cur['od'].'</a></td>
+									<td width="35%" style="text-align:center; font-weight:bold;"><a href="/profile.php?id='.$cur['dlaid'].'">'.$cur['dla'].'</td>
+									<td width="15%" style="text-align:center; font-weight:bold;"><a href="/viewtopic.php?pid='.$cur['post_id']."#p".$cur['post_id'].'">click</a></td>
 								</tr>';
 							}
 							
@@ -190,8 +190,8 @@ else if($action == 'points') {
 							{
 								if(empty($cur['poster'])) continue;
 								echo '<tr>
-									<td width="50%" style="text-align:center; font-weight:bold;"><a href="/forum/profile.php?id='.$cur['poster_id'].'">'.$cur['poster'].'</a></td>
-									<td width="25%" style="text-align:center; font-weight:bold;"><a href="/forum/viewtopic.php?pid='.$cur['post_id'].'">click</a></td>
+									<td width="50%" style="text-align:center; font-weight:bold;"><a href="/profile.php?id='.$cur['poster_id'].'">'.$cur['poster'].'</a></td>
+									<td width="25%" style="text-align:center; font-weight:bold;"><a href="/viewtopic.php?pid='.$cur['post_id'].'">click</a></td>
 									<td width="25%" style="text-align:center; font-weight:bold;">'.$cur['c'].'</td>
 								</tr>';
 							}
@@ -234,7 +234,7 @@ else if($action == 'points') {
 							{
 								if(empty($cur['username'])) continue;
 								echo '<tr>
-									<td width="50%" style="text-align:center; font-weight:bold;"><a href="/forum/profile.php?id='.$cur["i"].'">'.$cur['username'].'</a></td>
+									<td width="50%" style="text-align:center; font-weight:bold;"><a href="/profile.php?id='.$cur["i"].'">'.$cur['username'].'</a></td>
 									<td width="10%" style="text-align:center; font-weight:bold;">'.$cur['o'].'</td>
 									<td width="10%" style="text-align:center; font-weight:bold;">'.$cur['p'].'</td>
 									<td width="10%" style="text-align:center; font-weight:bold;">'.$cur['q'].'</td>
